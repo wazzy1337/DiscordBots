@@ -38,4 +38,11 @@ async def sinners_command(interaction: discord.Interaction):
         ephemeral=True
     )
 
+@bot.tree.command(name="total-sins", description="Shows the total number of Sins accumulated by the Sinners!")
+async def totalSins_command(interaction: discord.Interaction):
+    await interaction.response.send_message(
+        "Total: TBC",
+        ephemeral=True
+    )
+
 bot.run(TOKEN)
