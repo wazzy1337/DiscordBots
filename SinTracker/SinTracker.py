@@ -31,4 +31,11 @@ async def help_command(interaction: discord.Interaction):
         ephemeral=True
     )
 
+@bot.tree.command(name="sinners", description="Shows the names of the Sinners!")
+async def sinners_command(interaction: discord.Interaction):
+    await interaction.response.send_message(
+        "Coonah the Cuck\nPat O'Well the Smell\nRupert the Bear with the fear of a Bare Pair\nWazzy the Wonderful",
+        ephemeral=True
+    )
+
 bot.run(TOKEN)
