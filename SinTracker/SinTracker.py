@@ -16,7 +16,13 @@ bot = commands.Bot(command_prefix=["$","Sin", "SIN", "sin"], intents=intents)
 
 @bot.event
 async def on_ready():
-    initialize_db()
+    try:
+        initialize_db()
+    except Exception as e:
+        print(f"Failed to initialize database: {e}")
+        await bot.close()
+        return
+
     await bot.tree.sync()
     print(f'Bot is online as {bot.user}')
 

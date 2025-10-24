@@ -1,6 +1,8 @@
 ﻿import os
 import sqlite3
 
+from Helpers.database_helper import run_sql_file
+
 def initialize_db():
     db_filename = "sinTracker.db"
 
@@ -15,8 +17,7 @@ def initialize_db():
         print(f"Database created and connected: {db_filename}")
 
     schema_path = os.path.join("SQLite", "schema.sql")
-    with open(schema_path, "r", encoding="utf-8") as f:
-        cursor.executescript(f.read())
+    run_sql_file(cursor, schema_path)
 
     conn.commit()
 
