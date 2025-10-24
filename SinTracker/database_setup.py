@@ -16,9 +16,13 @@ def initialize_db():
     else:
         print(f"Database created and connected: {db_filename}")
 
-    schema_path = os.path.join("SQLite", "schema.sql")
-    run_sql_file(cursor, schema_path)
+        # Run DB Schema
+        schema_path = os.path.join("SQLite", "schema.sql")
+        run_sql_file(cursor, schema_path)
 
+        # Run seed for Players (Sinners)
+        seed_path = os.path.join("SQLite", "seed_players.sql")
+        run_sql_file(cursor, seed_path)
+    
     conn.commit()
-
     conn.close()
