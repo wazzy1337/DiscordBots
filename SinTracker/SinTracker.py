@@ -5,6 +5,8 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
+from database_setup import initialize_db
+
 load_dotenv()
 TOKEN = os.getenv('SIN_TRACKER_BOT_TOKEN')
 
@@ -14,6 +16,7 @@ bot = commands.Bot(command_prefix=["$","Sin", "SIN", "sin"], intents=intents)
 
 @bot.event
 async def on_ready():
+    initialize_db()
     await bot.tree.sync()
     print(f'Bot is online as {bot.user}')
 
