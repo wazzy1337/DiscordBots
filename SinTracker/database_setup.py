@@ -1,28 +1,18 @@
 ﻿import os
 import sqlite3
 
-from Helpers.database_helper import run_sql_file
+from Helpers.database_helper import DB_FILENAME, run_sql_file
 
 def initialize_db():
-    db_filename = "sinTracker.db"
-
-    db_exists = os.path.exists(db_filename)
-
-    conn = sqlite3.connect(db_filename)
-    cursor = conn.cursor()
+    db_exists = os.path.exists(DB_FILENAME)
 
     if db_exists:
-        print(f"Connected to existing database: {db_filename}")
+        print(f"Connected to existing database: {DB_FILENAME}")
     else:
-        print(f"Database created and connected: {db_filename}")
+        print(f"Database created and connected: {DB_FILENAME}")
 
         # Run DB Schema
-        schema_path = os.path.join("SQLite", "schema.sql")
-        run_sql_file(cursor, schema_path)
+        run_sql_file("schema.sql")
 
         # Run seed for Players (Sinners)
-        seed_path = os.path.join("SQLite", "seed_players.sql")
-        run_sql_file(cursor, seed_path)
-    
-    conn.commit()
-    conn.close()
+        run_sql_file("seed_players.sql")
