@@ -1,11 +1,11 @@
-import os
+﻿import os
 
 from dotenv import load_dotenv
 import discord
 from discord import app_commands
 from discord.ext import commands
 
-from database import initialize_db
+from database import get_total_sins, initialize_db
 
 load_dotenv()
 TOKEN = os.getenv('SIN_TRACKER_BOT_TOKEN')
@@ -48,9 +48,10 @@ async def sinners_command(interaction: discord.Interaction):
     )
 
 @bot.tree.command(name="total-sins", description="Shows the total number of Sins accumulated by the Sinners!")
-async def totalSins_command(interaction: discord.Interaction):
+async def total_sins_command(interaction: discord.Interaction):
+    total = get_total_sins()
     await interaction.response.send_message(
-        "Total: TBC",
+        f"**Total:** 🐍 {total} 🐍",
         ephemeral=True
     )
 
