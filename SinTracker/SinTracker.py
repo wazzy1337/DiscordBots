@@ -5,7 +5,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from database_setup import initialize_db
+from database import initialize_db
 
 load_dotenv()
 TOKEN = os.getenv('SIN_TRACKER_BOT_TOKEN')
