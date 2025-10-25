@@ -32,7 +32,7 @@ def run_sql_file(filename):
     finally:
         conn.close()
 
-def run_sql_file_select(filename):
+def run_sql_file_select(filename, params=None):
     """
     Execute a SELECT statement from a SQL file and return the result.
 
@@ -51,7 +51,7 @@ def run_sql_file_select(filename):
     try:
         with open(file_path, "r", encoding="utf-8") as f:
             query = f.read()
-            cursor.execute(query)
+            cursor.execute(query, params or ()) # Handling no parameters passed.
             rows = cursor.fetchall()
     except sqlite3.DatabaseError as e:
             print(f"SQLite error while executing {file_path}: {e}")

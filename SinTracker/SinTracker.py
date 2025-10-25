@@ -5,7 +5,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from database import get_total_sins, initialize_db
+from database import get_total_sins, get_total_sins_by_player, initialize_db
 
 load_dotenv()
 TOKEN = os.getenv('SIN_TRACKER_BOT_TOKEN')
@@ -47,12 +47,19 @@ async def sinners_command(interaction: discord.Interaction):
         ephemeral=True
     )
 
-@bot.tree.command(name="total-sins", description="Shows the total number of Sins accumulated by the Sinners!")
-async def total_sins_command(interaction: discord.Interaction):
-    total = get_total_sins()
-    await interaction.response.send_message(
-        f"**Total:** 🐍 {total} 🐍",
-        ephemeral=True
-    )
+@bot.tree.command(name="total-sins", description="Shows the total number of Sins — optionally for a specific Sinner.")
+@app_commands.describe(player="Name of the Sinner (optional, case-sensitive)")
+async def total_sins_command(interaction: discord.Interaction, player: str = None):
+    if player:
+        total = get_total_sins_by_player(player)
+        if total is None:
+            msg = f"😈 No Sinner found with the name **{player}**"
+        else:
+            msg = f"**Total Sins 🐍:** {total} ({player})"
+    else:
+        total = get_total_sins()
+        msg = f"**Total Sins 🐍:** {total} (All Sinners)"
+
+    await interaction.response.send_message(msg, ephemeral=True)
 
 bot.run(TOKEN)
