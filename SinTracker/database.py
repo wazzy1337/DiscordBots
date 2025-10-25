@@ -17,6 +17,11 @@ def initialize_db():
         # Run seed for Players (Sinners)
         run_sql_file("seed_players.sql")
 
+        # Run seed for Sins
+        run_sql_file("seed_sins.sql")
+
+
+
 def get_total_sins():
     total = run_sql_file_select("get_total_sins.sql")
     return total[0][0] if total and total[0][0] is not None else 0
