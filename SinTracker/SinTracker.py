@@ -5,7 +5,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from database import get_total_sins, get_total_sins_by_player, initialize_db
+from database import get_sins, get_total_sins, get_total_sins_by_player, initialize_db
 
 load_dotenv()
 TOKEN = os.getenv('SIN_TRACKER_BOT_TOKEN')
@@ -39,6 +39,26 @@ async def help_command(interaction: discord.Interaction):
         "\nHere are my commands:\n" + "\n".join(commands_list),
         ephemeral=True
     )
+
+@bot.tree.command(name="sins", description="Shows all the Sins the Sinners can commit!")
+@app_commands.describe(cost="When true, retrieves sin amount instead of description (optional)")
+async def sins_command(interaction: discord.Interaction, cost: bool = False):
+    rows = get_sins()
+    if not rows:
+        await interaction.response.send_message("No sins found in the database.", ephemeral=True)
+        return
+
+    if cost:
+        # Build a string listing all sins with their cost.
+        # Use singular "Sin" if the count is 1, otherwise use plural "Sins".
+        sins_list = "\n".join([
+            f"**{row[0]}** = {row[2]} {'Sin' if row[2] == 1 else 'Sins'}"
+            for row in rows
+        ])
+    else:
+        sins_list = "\n".join([f"**{row[0]}** - {row[1]}" for row in rows])
+
+    await interaction.response.send_message(f"Here are the sins:\n{sins_list}", ephemeral=True)
 
 @bot.tree.command(name="sinners", description="Shows the names of the Sinners!")
 async def sinners_command(interaction: discord.Interaction):

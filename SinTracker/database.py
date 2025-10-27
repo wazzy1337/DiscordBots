@@ -29,3 +29,6 @@ def get_total_sins():
 def get_total_sins_by_player(player_name):
     total = run_sql_file_select("get_total_sins_player.sql", (player_name,))
     return total[0][0] if total and total[0][0] is not None else None
+
+def get_sins():
+    return run_sql_file_select("get_sins.sql")
