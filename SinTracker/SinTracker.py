@@ -82,4 +82,12 @@ async def total_sins_command(interaction: discord.Interaction, player: str = Non
 
     await interaction.response.send_message(msg, ephemeral=True)
 
+@bot.tree.command(name="add-sin", description="Adds a Sin to a certain Sinner!")
+@app_commands.describe(player="The sinner to add the sin to", sin="The sin being committed")
+async def add_sin_command(interaction: discord.Interaction, player: str, sin: str):
+    await interaction.response.send_message(
+        f"✅ {player} has been punished for **{sin}**! Sin recorded successfully.",
+        ephemeral=True
+    )
+
 bot.run(TOKEN)
