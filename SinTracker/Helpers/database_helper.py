@@ -63,3 +63,43 @@ def run_sql_file_select(filename, params=None):
         conn.close()
 
     return rows
+
+def run_sql_file_write(filename, params=None):
+    """
+    Execute a non-SELECT SQL statement (INSERT, UPDATE, DELETE) from a SQL file.
+
+    Args:
+        filename (str): Name of .sql file
+        params (tuple, optional): Parameters to bind to the SQL statement.
+
+    Returns:
+        success (bool): Currently, informs you no except was hit. cursor.rowcount isn't working.
+    """
+    conn = sqlite3.connect(DB_FILENAME)
+    cursor = conn.cursor()
+
+    success = False
+
+    file_path = os.path.join("SQLite", filename)
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"SQL file not found: {file_path}")
+
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            query = f.read()
+            cursor.execute(query, params or ())
+            conn.commit()
+            success = True
+            print(f"Executed '{filename}' successfully")
+
+    except sqlite3.DatabaseError as e:
+        conn.rollback()
+        print(f"SQLite error while executing {file_path}: {e}")
+
+    except Exception as e:
+        conn.rollback()
+        print(f"Unexpected error while reading {file_path}: {e}")
+
+    finally:
+        conn.close()
+        return success
