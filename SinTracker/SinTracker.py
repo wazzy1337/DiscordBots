@@ -86,13 +86,13 @@ async def total_sins_command(interaction: discord.Interaction, player: str = Non
 @app_commands.describe(player="The sinner to add the sin to", sin="The sin being committed")
 @app_commands.choices(
     player=[
-        app_commands.Choice(name="Coonah the Cuck", value="Conner"),
-        app_commands.Choice(name="Pat O'Well the Smell", value="Pat"),
-        app_commands.Choice(name="Rupert the Bear", value="Rupert"),
-        app_commands.Choice(name="Wazzy the Wonderful", value="Wazzy")
+        app_commands.Choice(name="Coonah the Cuck", value=1),
+        app_commands.Choice(name="Pat O'Well the Smell", value=2),
+        app_commands.Choice(name="Rupert the Bear", value=3),
+        app_commands.Choice(name="Wazzy the Wonderful", value=4)
     ]
 )
-async def add_sin_command(interaction: discord.Interaction, player: app_commands.Choice[str], sin: str):
+async def add_sin_command(interaction: discord.Interaction, player: app_commands.Choice[int], sin: str):
     await interaction.response.send_message(
         f"✅ **{player.name}** has been punished for **{sin}**! Sin recorded successfully.",
         ephemeral=True
