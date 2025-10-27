@@ -7,6 +7,7 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "SinTracker", "SinTracker.py
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQLite", "SQLite", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 	ProjectSection(SolutionItems) = preProject
+		get_players.sql = get_players.sql
 		SQLite\get_sins.sql = SQLite\get_sins.sql
 		SQLite\get_total_sins.sql = SQLite\get_total_sins.sql
 		SQLite\get_total_sins_player.sql = SQLite\get_total_sins_player.sql

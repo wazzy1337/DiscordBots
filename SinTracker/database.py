@@ -32,3 +32,6 @@ def get_total_sins_by_player(player_name):
 
 def get_sins():
     return run_sql_file_select("get_sins.sql")
+
+def get_players():
+    return run_sql_file_select("get_players.sql")
