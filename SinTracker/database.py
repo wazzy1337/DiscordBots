@@ -1,7 +1,7 @@
 ﻿import os
 import sqlite3
 
-from Helpers.database_helper import DB_FILENAME, run_sql_file, run_sql_file_select
+from Helpers.database_helper import DB_FILENAME, run_sql_file, run_sql_file_select, run_sql_file_write
 
 def initialize_db():
     db_exists = os.path.exists(DB_FILENAME)
@@ -21,6 +21,8 @@ def initialize_db():
         run_sql_file("seed_sins.sql")
 
 
+def add_sin_to_player(player_id, sin_name):
+    return run_sql_file_write("add_sin.sql", (player_id, sin_name))
 
 def get_total_sins():
     total = run_sql_file_select("get_total_sins.sql")

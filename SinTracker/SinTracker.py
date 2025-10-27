@@ -5,7 +5,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from database import get_sins, get_total_sins, get_total_sins_by_player, initialize_db
+from database import add_sin_to_player, get_sins, get_total_sins, get_total_sins_by_player, initialize_db
 
 load_dotenv()
 TOKEN = os.getenv('SIN_TRACKER_BOT_TOKEN')
@@ -93,6 +93,7 @@ async def total_sins_command(interaction: discord.Interaction, player: str = Non
     ]
 )
 async def add_sin_command(interaction: discord.Interaction, player: app_commands.Choice[int], sin: str):
+    success = add_sin_to_player(player.value, 1)
     await interaction.response.send_message(
         f"✅ **{player.name}** has been punished for **{sin}**! Sin recorded successfully.",
         ephemeral=True
