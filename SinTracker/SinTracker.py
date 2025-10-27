@@ -84,9 +84,17 @@ async def total_sins_command(interaction: discord.Interaction, player: str = Non
 
 @bot.tree.command(name="add-sin", description="Adds a Sin to a certain Sinner!")
 @app_commands.describe(player="The sinner to add the sin to", sin="The sin being committed")
-async def add_sin_command(interaction: discord.Interaction, player: str, sin: str):
+@app_commands.choices(
+    player=[
+        app_commands.Choice(name="Coonah the Cuck", value="Conner"),
+        app_commands.Choice(name="Pat O'Well the Smell", value="Pat"),
+        app_commands.Choice(name="Rupert the Bear", value="Rupert"),
+        app_commands.Choice(name="Wazzy the Wonderful", value="Wazzy")
+    ]
+)
+async def add_sin_command(interaction: discord.Interaction, player: app_commands.Choice[str], sin: str):
     await interaction.response.send_message(
-        f"✅ {player} has been punished for **{sin}**! Sin recorded successfully.",
+        f"✅ **{player.name}** has been punished for **{sin}**! Sin recorded successfully.",
         ephemeral=True
     )
 
