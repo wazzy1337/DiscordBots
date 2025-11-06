@@ -5,5 +5,5 @@
 */
 
 UPDATE players
-SET total_sins = total_sins + :sin_cost
-WHERE player_id = :player_id;
+SET total_sins = total_sins + ?
+WHERE player_id = ?

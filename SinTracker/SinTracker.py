@@ -93,10 +93,23 @@ async def total_sins_command(interaction: discord.Interaction, player: str = Non
     ]
 )
 async def add_sin_command(interaction: discord.Interaction, player: app_commands.Choice[int], sin: str):
-    success = add_sin_to_player(player.value, 1)
-    await interaction.response.send_message(
-        f"✅ **{player.name}** has been punished for **{sin}**! Sin recorded successfully.",
-        ephemeral=True
-    )
+
+    # Get the sin from DB that matches the user's input (case-insensitive), or None if not found
+    valid_sin = next((s for s in get_sins() if s[0].lower() == sin.lower()), None)
+    
+    if not valid_sin:
+        await interaction.response.send_message(
+            f"❌ The sin **{sin}** does not exist. Use **/sins** to see the list of valid sins.",
+            ephemeral=True
+        )
+        return
+
+    sin_cost = valid_sin[2] if len(valid_sin) > 2 else 0
+    success = add_sin_to_player(sin_cost, player.value)
+    if success:
+        await interaction.response.send_message(
+            f"✅ **{player.name}** has been punished for **{sin}**! Sin recorded successfully.",
+            ephemeral=True
+        )
 
 bot.run(TOKEN)

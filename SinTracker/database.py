@@ -21,8 +21,8 @@ def initialize_db():
         run_sql_file("seed_sins.sql")
 
 
-def add_sin_to_player(player_id, sin_name):
-    return run_sql_file_write("add_sin.sql", (player_id, sin_name))
+def add_sin_to_player(sin_cost, player_id, ):
+    return run_sql_file_write("add_sin.sql", (sin_cost, player_id))
 
 def get_total_sins():
     total = run_sql_file_select("get_total_sins.sql")
