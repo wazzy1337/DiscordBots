@@ -40,12 +40,24 @@ async def post_sin_summary():
             channel = await bot.fetch_channel(channel_id) #Covering a cold cache scenario.
 
         if channel is not None:
+            # Check for existing Sin Summary message
+            async for msg in channel.history(limit=100):
+                if msg.author == channel.guild.me and msg.embeds:
+                    if msg.embeds[0].title == "Sin Summary":
+                        summary_message_id = msg.id
+                        break
+
             embed = discord.Embed(
-                title="Sin Summary",
-                description="```\nPlayer           | Sins\n-----------------|------\n```\n",
-                color=discord.Color.brand_red()
+                    title="Sin Summary",
+                    description="```\nPlayer           | Sins\n-----------------|------\n```\n",
+                    color=discord.Color.brand_red()
             )
-            await channel.send(embed=embed)
+            if summary_message_id is None:
+                await channel.send(embed=embed)
+            else:
+                message = await channel.fetch_message(summary_message_id)
+                await message.edit(embed=embed)
+
         else:
             print(f"Could not access Channel ID: {channel_id}")
 
