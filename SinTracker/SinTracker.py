@@ -109,7 +109,6 @@ async def add_sin_command(interaction: discord.Interaction, player: app_commands
     if success:
         await interaction.response.send_message(
             f"✅ **{player.name}** has been punished for **{sin}**! Sin recorded successfully.",
-            ephemeral=True
         )
 
 bot.run(TOKEN)
