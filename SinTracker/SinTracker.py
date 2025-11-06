@@ -14,6 +14,8 @@ intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix=["$","Sin", "SIN", "sin"], intents=intents)
 
+channel_id = int(os.getenv("SINS_CHANNEL_ID"))
+
 SINS = get_sins()
 SIN_NAMES = [app_commands.Choice(name=sin[0], value=sin[0]) for sin in SINS]
 
@@ -28,6 +30,27 @@ async def on_ready():
 
     await bot.tree.sync()
     print(f'Bot is online as {bot.user}')
+
+    await post_sin_summary()
+
+async def post_sin_summary():
+    try:
+        channel = bot.get_channel(channel_id)
+        if channel is None:
+            channel = await bot.fetch_channel(channel_id) #Covering a cold cache scenario.
+
+        if channel is not None:
+            embed = discord.Embed(
+                title="Sin Summary",
+                description="```\nPlayer           | Sins\n-----------------|------\n```\n",
+                color=discord.Color.brand_red()
+            )
+            await channel.send(embed=embed)
+        else:
+            print(f"Could not access Channel ID: {channel_id}")
+
+    except Exception as e:
+        print(f"Could not post Sin Summary: {e}")
 
 @bot.tree.command(name="help", description="Shows all available commands")
 async def help_command(interaction: discord.Interaction):
