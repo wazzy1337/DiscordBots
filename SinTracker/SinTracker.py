@@ -14,6 +14,9 @@ intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix=["$","Sin", "SIN", "sin"], intents=intents)
 
+SINS = get_sins()
+SIN_NAMES = [app_commands.Choice(name=sin[0], value=sin[0]) for sin in SINS]
+
 @bot.event
 async def on_ready():
     try:
@@ -43,8 +46,7 @@ async def help_command(interaction: discord.Interaction):
 @bot.tree.command(name="sins", description="Shows all the Sins the Sinners can commit!")
 @app_commands.describe(cost="When true, retrieves sin amount instead of description (optional)")
 async def sins_command(interaction: discord.Interaction, cost: bool = False):
-    rows = get_sins()
-    if not rows:
+    if not SINS:
         await interaction.response.send_message("No sins found in the database.", ephemeral=True)
         return
 
@@ -52,11 +54,11 @@ async def sins_command(interaction: discord.Interaction, cost: bool = False):
         # Build a string listing all sins with their cost.
         # Use singular "Sin" if the count is 1, otherwise use plural "Sins".
         sins_list = "\n".join([
-            f"**{row[0]}** = {row[2]} {'Sin' if row[2] == 1 else 'Sins'}"
-            for row in rows
+            f"**{sin[0]}** = {sin[2]} {'Sin' if sin[2] == 1 else 'Sins'}"
+            for sin in SINS
         ])
     else:
-        sins_list = "\n".join([f"**{row[0]}** - {row[1]}" for row in rows])
+        sins_list = "\n".join([f"**{sin[0]}** - {sin[1]}" for sin in SINS])
 
     await interaction.response.send_message(f"Here are the sins:\n{sins_list}", ephemeral=True)
 
@@ -90,21 +92,10 @@ async def total_sins_command(interaction: discord.Interaction, player: str = Non
         app_commands.Choice(name="Pat O'Well the Smell", value=2),
         app_commands.Choice(name="Rupert the Bear", value=3),
         app_commands.Choice(name="Wazzy the Wonderful", value=4)
-    ]
-)
+    ], sin=SIN_NAMES)
 async def add_sin_command(interaction: discord.Interaction, player: app_commands.Choice[int], sin: str):
-
-    # Get the sin from DB that matches the user's input (case-insensitive), or None if not found
-    valid_sin = next((s for s in get_sins() if s[0].lower() == sin.lower()), None)
-    
-    if not valid_sin:
-        await interaction.response.send_message(
-            f"❌ The sin **{sin}** does not exist. Use **/sins** to see the list of valid sins.",
-            ephemeral=True
-        )
-        return
-
-    sin_cost = valid_sin[2] if len(valid_sin) > 2 else 0
+    chosen_sin = next(s for s in SINS if s[0] == sin)
+    sin_cost = chosen_sin[2] if len(chosen_sin) > 2 else 0
     success = add_sin_to_player(sin_cost, player.value)
     if success:
         await interaction.response.send_message(
