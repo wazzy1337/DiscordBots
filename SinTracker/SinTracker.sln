@@ -21,6 +21,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helpers", "Helpers", "{0D53FEA8-61C3-4747-AA2E-66DC1EB7ADE4}"
 	ProjectSection(SolutionItems) = preProject
 		Helpers\database_helper.py = Helpers\database_helper.py
+		Helpers\helper.py = Helpers\helper.py
 	EndProjectSection
 EndProject
 Global

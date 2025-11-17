@@ -6,6 +6,7 @@ from discord import app_commands
 from discord.ext import commands
 
 from database import add_sin_to_player, get_sins, get_total_sins, get_total_sins_by_player, initialize_db
+from Helpers.helper import build_sin_summary_description
 
 load_dotenv()
 TOKEN = os.getenv('SIN_TRACKER_BOT_TOKEN')
@@ -47,9 +48,10 @@ async def post_sin_summary():
                         summary_message_id = msg.id
                         break
 
+            sin_summary_description = build_sin_summary_description(["Conner", "Pat", "Rupert", "Wazzy"]) #TODO: Remove hardcoded sinners.
             embed = discord.Embed(
                     title="Sin Summary",
-                    description="```\nPlayer           | Sins\n-----------------|------\n```\n",
+                    description=sin_summary_description,
                     color=discord.Color.brand_red()
             )
             if summary_message_id is None:
