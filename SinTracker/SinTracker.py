@@ -132,9 +132,8 @@ async def total_sins_command(interaction: discord.Interaction, player: str = Non
         app_commands.Choice(name="Rupert the Bear", value=3),
         app_commands.Choice(name="Wazzy the Wonderful", value=4)
     ], sin=SIN_NAMES)
-async def add_sin_command(interaction: discord.Interaction, player: app_commands.Choice[int], sin: str):
-    chosen_sin = next(s for s in SINS if s[0] == sin)
-    sin_cost = chosen_sin[2] if len(chosen_sin) > 2 else 0
+async def add_sin_command(interaction: discord.Interaction, player: app_commands.Choice[int], sin: app_commands.Choice[int]):
+    sin_cost = SINS[sin.value-1][3]
     success = add_sin_to_player(sin_cost, player.value)
     if success:
         await interaction.response.send_message(
