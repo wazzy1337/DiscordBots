@@ -17,8 +17,10 @@ bot = commands.Bot(command_prefix=["$","Sin", "SIN", "sin"], intents=intents)
 
 channel_id = int(os.getenv("SINS_CHANNEL_ID"))
 
-SINS = get_sins()
-SIN_NAMES = [app_commands.Choice(name=sin[0], value=sin[0]) for sin in SINS]
+SINS = get_sins() # TODO: resolve instantiation issue for blank DBs.
+ORDERED_SINS = SINS.copy()
+ORDERED_SINS.sort(key=lambda x: x[1].lower()) # Order sins alphabetically. This retains sin id order in SIN list.
+SIN_NAMES = [app_commands.Choice(name=sin[1], value=sin[0]) for sin in ORDERED_SINS] # TODO: resolve ordering issue for blank DBs.
 
 @bot.event
 async def on_ready():
@@ -83,7 +85,7 @@ async def help_command(interaction: discord.Interaction):
 @bot.tree.command(name="sins", description="Shows all the Sins the Sinners can commit!")
 @app_commands.describe(cost="When true, retrieves sin amount instead of description (optional)")
 async def sins_command(interaction: discord.Interaction, cost: bool = False):
-    if not SINS:
+    if not ORDERED_SINS:
         await interaction.response.send_message("No sins found in the database.", ephemeral=True)
         return
 
@@ -91,11 +93,11 @@ async def sins_command(interaction: discord.Interaction, cost: bool = False):
         # Build a string listing all sins with their cost.
         # Use singular "Sin" if the count is 1, otherwise use plural "Sins".
         sins_list = "\n".join([
-            f"**{sin[0]}** = {sin[2]} {'Sin' if sin[2] == 1 else 'Sins'}"
-            for sin in SINS
+            f"**{sin[1]}** = {sin[3]} {'Sin' if sin[3] == 1 else 'Sins'}"
+            for sin in ORDERED_SINS
         ])
     else:
-        sins_list = "\n".join([f"**{sin[0]}** - {sin[1]}" for sin in SINS])
+        sins_list = "\n".join([f"**{sin[1]}** - {sin[2]}" for sin in ORDERED_SINS])
 
     await interaction.response.send_message(f"Here are the sins:\n{sins_list}", ephemeral=True)
 
