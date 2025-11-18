@@ -136,6 +136,7 @@ async def add_sin_command(interaction: discord.Interaction, player: app_commands
     sin_cost = SINS[sin.value-1][3]
     success = add_sin_to_player(sin_cost, player.value)
     if success:
+        await post_sin_summary()
         await interaction.response.send_message(
             f"✅ **{player.name}** has been punished for **{sin.name}**! Sin recorded successfully.",
         )
