@@ -20,6 +20,8 @@ def initialize_db():
         # Run seed for Sins
         run_sql_file("seed_sins.sql")
 
+def add_sin_to_audit_trail(sin_id, player_id, auditor_id):
+    return run_sql_file_write("add_sin_to_audit_trail.sql", (sin_id, player_id, auditor_id))
 
 def add_sin_to_player(sin_cost, player_id, ):
     return run_sql_file_write("add_sin.sql", (sin_cost, player_id))
