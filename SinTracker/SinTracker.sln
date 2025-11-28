@@ -8,8 +8,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQLite", "SQLite", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 	ProjectSection(SolutionItems) = preProject
 		SQLite\add_sin.sql = SQLite\add_sin.sql
-		SQLite\get_sins.sql = SQLite\get_sins.sql
 		SQLite\add_sin_to_audit_trail.sql = SQLite\add_sin_to_audit_trail.sql
+		SQLite\get_player_by_discord_id.sql = SQLite\get_player_by_discord_id.sql
+		SQLite\get_sins.sql = SQLite\get_sins.sql
 		SQLite\get_total_sins.sql = SQLite\get_total_sins.sql
 		SQLite\get_total_sins_player.sql = SQLite\get_total_sins_player.sql
 		SQLite\schema.sql = SQLite\schema.sql

@@ -5,7 +5,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from database import add_sin_to_audit_trail, add_sin_to_player, get_sins, get_total_sins, get_total_sins_by_player, initialize_db
+from database import add_sin_to_audit_trail, add_sin_to_player, get_player_by_discord_id, get_sins, get_total_sins, get_total_sins_by_player, initialize_db
 from Helpers.helper import build_sin_summary_description
 
 load_dotenv()
@@ -133,11 +133,12 @@ async def total_sins_command(interaction: discord.Interaction, player: str = Non
         app_commands.Choice(name="Wazzy the Wonderful", value=4)
     ], sin=SIN_NAMES)
 async def add_sin_command(interaction: discord.Interaction, player: app_commands.Choice[int], sin: app_commands.Choice[int]):
-    sin_id = sin.value-1
-    sin_cost = SINS[sin_id][3]
+    sin_id = sin.value
+    sin_cost = SINS[sin_id-1][3]
     success = add_sin_to_player(sin_cost, player.value)
     if success:
-        add_sin_to_audit_trail(sin_id, player.value, 4) # Upon successful sin addition, log to audit trail with ID 4 (Wazzy)
+        auditor_id = get_player_by_discord_id(interaction.user.id)
+        add_sin_to_audit_trail(sin_id, player.value, auditor_id)
         await post_sin_summary()
         await interaction.response.send_message(
             f"✅ **{player.name}** has been punished for **{sin.name}**! Sin recorded successfully.",

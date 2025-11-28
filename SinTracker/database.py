@@ -26,6 +26,10 @@ def add_sin_to_audit_trail(sin_id, player_id, auditor_id):
 def add_sin_to_player(sin_cost, player_id, ):
     return run_sql_file_write("add_sin.sql", (sin_cost, player_id))
 
+def get_player_by_discord_id(discord_id):
+    player = run_sql_file_select("get_player_by_discord_id.sql", (discord_id,))
+    return int(player[0][0]) if player else None
+
 def get_total_sins():
     total = run_sql_file_select("get_total_sins.sql")
     return total[0][0] if total and total[0][0] is not None else 0
