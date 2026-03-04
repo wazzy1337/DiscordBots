@@ -1,4 +1,4 @@
-﻿import os
+import os
 
 from dotenv import load_dotenv
 import discord
@@ -44,6 +44,7 @@ async def post_sin_summary():
 
         if channel is not None:
             # Check for existing Sin Summary message
+            summary_message_id = None
             async for msg in channel.history(limit=100):
                 if msg.author == channel.guild.me and msg.embeds:
                     if msg.embeds[0].title == "Sin Summary":
