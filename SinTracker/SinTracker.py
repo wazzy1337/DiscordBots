@@ -44,7 +44,7 @@ async def post_sin_summary():
 
         if channel is not None:
             # Check for existing Sin Summary message
-            async for msg in channel.history(limit=100):
+            async for msg in channel.history(limit=500):
                 if msg.author == channel.guild.me and msg.embeds:
                     if msg.embeds[0].title == "Sin Summary":
                         summary_message_id = msg.id
@@ -139,9 +139,9 @@ async def add_sin_command(interaction: discord.Interaction, player: app_commands
     if success:
         auditor_id = get_player_by_discord_id(interaction.user.id)
         add_sin_to_audit_trail(sin_id, player.value, auditor_id)
-        await post_sin_summary()
         await interaction.response.send_message(
             f"✅ **{player.name}** has been punished for **{sin.name}**! Sin recorded successfully.",
         )
+        await post_sin_summary()
 
 bot.run(TOKEN)
